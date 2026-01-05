@@ -68,27 +68,27 @@
             }
         }
 
+        /* 3D 容器 */
         .scroll-container {
             width: 100%;
             height: 100vh;
-            overflow-x: scroll;
-            overflow-y: hidden;
             position: relative;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .scroll-container::-webkit-scrollbar {
-            display: none;
+            perspective: 1200px;
+            perspective-origin: 50% 50%;
+            overflow: hidden;
         }
 
         .scroll-content {
             display: flex;
             height: 100vh;
             align-items: center;
+            justify-content: center;
             gap: 0;
-            min-width: max-content;
-            transition: transform 0.05s linear;
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform-style: preserve-3d;
+            transition: transform 0.1s linear;
         }
 
         /* 左右填充 */
@@ -96,7 +96,7 @@
         .scroll-content::after {
             content: '';
             display: block;
-            min-width: 50vw;
+            min-width: 100vw;
             height: 100vh;
             flex-shrink: 0;
         }
@@ -106,36 +106,56 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-width: 200px;
+            min-width: 250px;
             height: 100vh;
             padding: 0 60px;
             flex-shrink: 0;
-            opacity: 0;
-            transition: all 0.8s ease-out;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .scroll-item.visible {
-            opacity: 1;
-        }
-
-        /* 模糊效果 - 核心：只有中心清晰 */
+        /* 3D 变换 - 根据位置 */
         .scroll-item {
-            filter: blur(8px) opacity(0.3);
-            transform: scale(0.9);
+            opacity: 0.2;
+            filter: blur(10px);
+            transform: translateZ(-400px) scale(0.7);
         }
 
+        .scroll-item.position-1 {
+            opacity: 0.4;
+            filter: blur(6px);
+            transform: translateZ(-200px) scale(0.8) rotateY(15deg);
+        }
+
+        .scroll-item.position-2 {
+            opacity: 0.7;
+            filter: blur(3px);
+            transform: translateZ(-50px) scale(0.9) rotateY(5deg);
+        }
+
+        /* 中心 - 最大最清晰 */
         .scroll-item.center {
-            filter: blur(0px) opacity(1);
-            transform: scale(1);
+            opacity: 1;
+            filter: blur(0px);
+            transform: translateZ(100px) scale(1.1);
+            z-index: 100;
         }
 
-        .scroll-item.near-center {
-            filter: blur(3px) opacity(0.6);
-            transform: scale(0.95);
+        .scroll-item.position--2 {
+            opacity: 0.7;
+            filter: blur(3px);
+            transform: translateZ(-50px) scale(0.9) rotateY(-5deg);
+        }
+
+        .scroll-item.position--1 {
+            opacity: 0.4;
+            filter: blur(6px);
+            transform: translateZ(-200px) scale(0.8) rotateY(-15deg);
         }
 
         .scroll-item-content {
-            font-size: 36px;
+            font-size: 32px;
             line-height: 2;
             letter-spacing: 0.3em;
             color: #d4c5a9;
@@ -149,9 +169,9 @@
 
         .scroll-item.center .scroll-item-content {
             color: #f5e6d3;
-            text-shadow: 0 0 30px rgba(245, 230, 211, 0.6),
-                         0 0 60px rgba(245, 230, 211, 0.3);
-            font-size: 42px;
+            text-shadow: 0 0 40px rgba(245, 230, 211, 0.8),
+                         0 0 80px rgba(245, 230, 211, 0.4);
+            font-size: 48px;
         }
 
         .scroll-item-content::before,
@@ -160,7 +180,7 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 40px;
+            width: 50px;
             height: 1px;
             background: linear-gradient(to right, transparent, #c9b896, transparent);
             opacity: 0;
@@ -173,11 +193,11 @@
         }
 
         .scroll-item-content::before {
-            right: -30px;
+            right: -35px;
         }
 
         .scroll-item-content::after {
-            left: -30px;
+            left: -35px;
         }
 
         /* 水印 - 此刻 */
@@ -186,8 +206,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 160px;
-            color: rgba(201, 184, 150, 0.04);
+            font-size: 180px;
+            color: rgba(201, 184, 150, 0.03);
             writing-mode: vertical-rl;
             text-orientation: upright;
             letter-spacing: 0.5em;
@@ -199,11 +219,11 @@
 
         @keyframes pulse {
             0%, 100% {
-                opacity: 0.04;
+                opacity: 0.03;
                 transform: translate(-50%, -50%) scale(1);
             }
             50% {
-                opacity: 0.08;
+                opacity: 0.06;
                 transform: translate(-50%, -50%) scale(1.02);
             }
         }
@@ -223,7 +243,7 @@
 
         /* 呼吸空间 */
         .spacer {
-            min-width: 180px;
+            min-width: 200px;
             height: 100vh;
             flex-shrink: 0;
             position: relative;
@@ -260,9 +280,9 @@
             height: 100vh;
             background: linear-gradient(to bottom,
                 transparent 0%,
-                rgba(201, 184, 150, 0.15) 20%,
-                rgba(201, 184, 150, 0.3) 50%,
-                rgba(201, 184, 150, 0.15) 80%,
+                rgba(201, 184, 150, 0.1) 20%,
+                rgba(201, 184, 150, 0.2) 50%,
+                rgba(201, 184, 150, 0.1) 80%,
                 transparent 100%);
             pointer-events: none;
             z-index: 5;
@@ -276,23 +296,27 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(to right,
-                rgba(10, 10, 10, 0.9) 0%,
-                transparent 25%,
-                transparent 75%,
-                rgba(10, 10, 10, 0.9) 100%);
+                rgba(10, 10, 10, 0.95) 0%,
+                transparent 30%,
+                transparent 70%,
+                rgba(10, 10, 10, 0.95) 100%);
             pointer-events: none;
             z-index: 10;
         }
 
         /* 响应式 */
         @media (max-width: 768px) {
+            .scroll-container {
+                perspective: 800px;
+            }
+
             .scroll-item-content {
-                font-size: 28px;
+                font-size: 24px;
                 padding: 15px;
             }
 
             .scroll-item.center .scroll-item-content {
-                font-size: 34px;
+                font-size: 36px;
             }
 
             .watermark {
@@ -300,12 +324,12 @@
             }
 
             .scroll-item {
-                min-width: 150px;
+                min-width: 180px;
                 padding: 0 40px;
             }
 
             .spacer {
-                min-width: 120px;
+                min-width: 140px;
             }
         }
 
@@ -344,7 +368,7 @@
         // 创建粒子
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
-            const particleCount = 30;
+            const particleCount = 40;
 
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
@@ -357,18 +381,16 @@
             }
         }
 
-        // 无尽卷轴 - 永远的"此刻"
+        // 无尽卷轴 - 3D 版本
         class InfiniteScrollOfNow {
             constructor() {
-                this.container = document.querySelector('.scroll-container');
                 this.content = document.getElementById('scrollContent');
                 this.contentPool = this.getContentPool();
                 this.currentIndex = 0;
-                this.isScrolling = false;
-                this.scrollThreshold = 300;
-                this.autoScrollSpeed = 0.3; // 自动滚动速度
-                this.scrollPosition = 0;
-                this.isAutoScrolling = true;
+                this.scrollOffset = 0;
+                this.autoScrollSpeed = 0.5; // 自动滚动速度
+                this.itemWidth = 450; // 每个 item + spacer 的宽度
+                this.items = [];
 
                 this.init();
             }
@@ -411,100 +433,95 @@
             }
 
             init() {
-                console.log('无尽卷轴初始化...');
+                console.log('无尽卷轴 3D 初始化...');
                 this.createInitialContent();
+                this.update3DPositions();
 
-                setTimeout(() => {
-                    this.centerScroll();
-                    this.updateBlurEffect();
-                    console.log('初始化完成！');
+                // 开始自动滚动动画
+                this.startAutoScroll();
 
-                    // 开始自动滚动
-                    this.startAutoScroll();
-                }, 100);
-
-                // 监听手动滚动
-                this.container.addEventListener('scroll', () => {
-                    this.isAutoScrolling = false;
-                    this.handleScroll();
-
-                    // 3秒后恢复自动滚动
-                    clearTimeout(this.autoScrollTimeout);
-                    this.autoScrollTimeout = setTimeout(() => {
-                        this.isAutoScrolling = true;
-                    }, 3000);
-                });
-
-                // 监听滚动事件以更新模糊效果
-                this.container.addEventListener('scroll', () => this.updateBlurEffect());
+                console.log('初始化完成！内容自动流动中...');
             }
 
             createInitialContent() {
-                const itemCount = 20;
+                const itemCount = 15;
                 for (let i = 0; i < itemCount; i++) {
-                    this.addItem('append');
+                    this.addItem();
                 }
-
-                // 显示动画
-                setTimeout(() => {
-                    document.querySelectorAll('.scroll-item').forEach((item, index) => {
-                        setTimeout(() => {
-                            item.classList.add('visible');
-                        }, index * 50);
-                    });
-                }, 100);
             }
 
             startAutoScroll() {
                 const animate = () => {
-                    if (this.isAutoScrolling) {
-                        this.scrollPosition += this.autoScrollSpeed;
-                        this.container.scrollLeft = this.scrollPosition;
-                        this.handleScroll();
+                    // 自动向右滚动
+                    this.scrollOffset += this.autoScrollSpeed;
+
+                    // 循环逻辑
+                    if (this.scrollOffset >= this.itemWidth) {
+                        this.scrollOffset -= this.itemWidth;
+                        // 移除第一个，添加到最后
+                        this.rotateItems();
                     }
+
+                    // 更新显示
+                    this.updateTransform();
+                    this.update3DPositions();
+
                     requestAnimationFrame(animate);
                 };
                 animate();
             }
 
-            updateBlurEffect() {
-                const items = document.querySelectorAll('.scroll-item');
-                const containerRect = this.container.getBoundingClientRect();
-                const centerX = containerRect.width / 2;
+            updateTransform() {
+                const translateX = -this.scrollOffset;
+                this.content.style.transform = `translateX(${translateX}px)`;
+            }
 
-                items.forEach(item => {
-                    const itemRect = item.getBoundingClientRect();
-                    const itemCenterX = itemRect.left + itemRect.width / 2 - containerRect.left;
-                    const distance = Math.abs(itemCenterX - centerX);
+            update3DPositions() {
+                const allElements = Array.from(this.content.children);
+                const items = allElements.filter(el => el.classList.contains('scroll-item'));
 
-                    // 移除所有类
-                    item.classList.remove('center', 'near-center');
+                items.forEach((item, index) => {
+                    // 移除所有位置类
+                    item.classList.remove('center', 'position-1', 'position-2', 'position--1', 'position--2');
 
-                    // 根据距离中心的位置添加类
-                    if (distance < 100) {
+                    // 计算相对中心的位置
+                    const centerIndex = Math.floor(items.length / 2);
+                    const relativePosition = index - centerIndex;
+
+                    // 应用位置类
+                    if (relativePosition === 0) {
                         item.classList.add('center');
-                    } else if (distance < 300) {
-                        item.classList.add('near-center');
+                    } else if (relativePosition === 1) {
+                        item.classList.add('position-1');
+                    } else if (relativePosition === 2) {
+                        item.classList.add('position-2');
+                    } else if (relativePosition === -1) {
+                        item.classList.add('position--1');
+                    } else if (relativePosition === -2) {
+                        item.classList.add('position--2');
                     }
                 });
             }
 
-            addItem(position = 'append') {
+            rotateItems() {
+                // 移除前两个元素（item + spacer）
+                if (this.content.children.length > 2) {
+                    this.content.removeChild(this.content.children[0]);
+                    this.content.removeChild(this.content.children[0]);
+                }
+
+                // 添加新元素到末尾
+                this.addItem();
+            }
+
+            addItem() {
                 const item = this.createScrollItem();
                 const spacer = this.createSpacer();
 
-                if (position === 'prepend') {
-                    this.content.insertBefore(spacer, this.content.firstChild);
-                    this.content.insertBefore(item, this.content.firstChild);
-                } else {
-                    this.content.appendChild(item);
-                    this.content.appendChild(spacer);
-                }
+                this.content.appendChild(item);
+                this.content.appendChild(spacer);
 
-                // 添加后立即应用visible类
-                setTimeout(() => {
-                    item.classList.add('visible');
-                }, 50);
+                this.items.push(item);
             }
 
             createScrollItem() {
@@ -529,65 +546,6 @@
                 const spacer = document.createElement('div');
                 spacer.className = 'spacer';
                 return spacer;
-            }
-
-            handleScroll() {
-                if (this.isScrolling) return;
-
-                this.isScrolling = true;
-
-                requestAnimationFrame(() => {
-                    const scrollLeft = this.container.scrollLeft;
-                    const scrollWidth = this.container.scrollWidth;
-                    const clientWidth = this.container.clientWidth;
-                    const center = (scrollWidth - clientWidth) / 2;
-
-                    if (Math.abs(scrollLeft - center) > this.scrollThreshold) {
-                        this.rebalance(scrollLeft, center);
-                    }
-
-                    this.updateBlurEffect();
-                    this.isScrolling = false;
-                });
-            }
-
-            rebalance(currentScroll, center) {
-                const isScrollingRight = currentScroll > center;
-
-                if (isScrollingRight) {
-                    this.addItem('append');
-                    this.removeOldItems('start', 2);
-                } else {
-                    this.addItem('prepend');
-                    this.removeOldItems('end', 2);
-                }
-
-                setTimeout(() => {
-                    this.centerScroll();
-                }, 10);
-            }
-
-            removeOldItems(position, count) {
-                for (let i = 0; i < count; i++) {
-                    if (position === 'start') {
-                        if (this.content.firstChild) {
-                            this.content.removeChild(this.content.firstChild);
-                        }
-                    } else {
-                        if (this.content.lastChild) {
-                            this.content.removeChild(this.content.lastChild);
-                        }
-                    }
-                }
-            }
-
-            centerScroll() {
-                const scrollWidth = this.container.scrollWidth;
-                const clientWidth = this.container.clientWidth;
-                const center = (scrollWidth - clientWidth) / 2;
-
-                this.container.scrollLeft = center;
-                this.scrollPosition = center;
             }
         }
 
