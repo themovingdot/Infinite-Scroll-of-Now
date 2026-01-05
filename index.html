@@ -239,6 +239,9 @@
         let currentIndex = 0;
         let offset = 0;
         const itemSpacing = 550;
+        let isPaused = false;
+        let pauseTimer = 0;
+        const pauseDuration = 120; // 暂停帧数（约2秒）
 
         // 创建粒子
         function createParticles() {
@@ -351,10 +354,41 @@
 
         // 平滑滚动动画
         function animate() {
-            offset += 1; // 滚动速度
+            // 检查是否有元素在中心附近
+            const centerIndex = Math.floor(items.length / 2);
+            let hasItemAtCenter = false;
+
+            items.forEach((item, index) => {
+                const relativePos = index - centerIndex;
+                const baseX = relativePos * itemSpacing - offset;
+                const absDistance = Math.abs(baseX);
+
+                // 如果有元素在中心 30px 范围内
+                if (absDistance < 30 && !isPaused) {
+                    hasItemAtCenter = true;
+                }
+            });
+
+            // 暂停逻辑
+            if (hasItemAtCenter && !isPaused) {
+                isPaused = true;
+                pauseTimer = 0;
+            }
+
+            if (isPaused) {
+                pauseTimer++;
+                if (pauseTimer >= pauseDuration) {
+                    isPaused = false;
+                    pauseTimer = 0;
+                }
+            }
+
+            // 只有在不暂停时才移动
+            if (!isPaused) {
+                offset += 1; // 滚动速度
+            }
 
             // 更新所有项目
-            const centerIndex = Math.floor(items.length / 2);
             items.forEach((item, index) => {
                 const relativePos = index - centerIndex;
                 const baseX = relativePos * itemSpacing - offset;
