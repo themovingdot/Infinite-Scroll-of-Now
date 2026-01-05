@@ -10,6 +10,7 @@ body {
     overflow: hidden;
     width: 100vw;
     height: 100vh;
+    position: relative;
 }
 
 .scroll-container {
@@ -18,31 +19,41 @@ body {
     overflow-x: auto;
     overflow-y: hidden;
     position: relative;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .scroll-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
 }
 
 .scroll-content {
-    display: inline-flex;
+    display: flex;
     height: 100vh;
-    padding: 0 50vw;
-    position: relative;
-    z-index: 10;
+    align-items: center;
+    gap: 0;
+    min-width: max-content;
+}
+
+/* 左右填充用于居中 */
+.scroll-content::before,
+.scroll-content::after {
+    content: '';
+    display: block;
+    min-width: 50vw;
+    height: 100vh;
+    flex-shrink: 0;
 }
 
 .scroll-item {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     min-width: 200px;
     height: 100vh;
     padding: 0 60px;
-    position: relative;
+    flex-shrink: 0;
     opacity: 0;
     animation: fadeIn 1s ease forwards;
 }
@@ -54,13 +65,12 @@ body {
 }
 
 .scroll-item-content {
-    font-size: 24px;
-    line-height: 2.2;
-    letter-spacing: 0.15em;
+    font-size: 28px;
+    line-height: 2;
+    letter-spacing: 0.2em;
     color: #2c2c2c;
-    text-align: center;
     position: relative;
-    padding: 40px 20px;
+    padding: 20px;
     writing-mode: vertical-rl;
     text-orientation: upright;
 }
@@ -71,56 +81,57 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 40px;
+    width: 30px;
     height: 1px;
     background: linear-gradient(to right, transparent, #c9b896, transparent);
 }
 
 .scroll-item-content::before {
-    right: -30px;
+    right: -25px;
 }
 
 .scroll-item-content::after {
-    left: -30px;
+    left: -25px;
 }
 
-/* 水印 - "此刻" */
+/* 水印 */
 .watermark {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 120px;
-    color: rgba(201, 184, 150, 0.08);
+    font-size: 140px;
+    color: rgba(201, 184, 150, 0.06);
     writing-mode: vertical-rl;
     text-orientation: upright;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.3em;
     pointer-events: none;
     z-index: 1;
-    font-weight: 300;
+    font-weight: 200;
 }
 
-/* 变体样式 - 为循环内容添加微妙变化 */
+/* 变体样式 */
 .scroll-item.variant-1 .scroll-item-content {
     color: #3a3a3a;
-    font-size: 23px;
+    font-size: 26px;
 }
 
 .scroll-item.variant-2 .scroll-item-content {
     color: #252525;
-    font-size: 25px;
-    letter-spacing: 0.18em;
+    font-size: 30px;
+    letter-spacing: 0.25em;
 }
 
 .scroll-item.variant-3 .scroll-item-content {
     color: #2c2c2c;
-    opacity: 0.95;
+    opacity: 0.92;
 }
 
 /* 呼吸空间 */
 .spacer {
     min-width: 150px;
     height: 100vh;
+    flex-shrink: 0;
     position: relative;
 }
 
@@ -130,25 +141,32 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: rgba(201, 184, 150, 0.3);
-    font-size: 16px;
-    writing-mode: horizontal-tb;
+    color: rgba(201, 184, 150, 0.25);
+    font-size: 14px;
 }
 
-/* 响应式设计 */
+/* 响应式 */
 @media (max-width: 768px) {
     .scroll-item-content {
+        font-size: 22px;
+        padding: 15px;
+    }
+
+    .scroll-item.variant-1 .scroll-item-content {
         font-size: 20px;
-        padding: 30px 15px;
+    }
+
+    .scroll-item.variant-2 .scroll-item-content {
+        font-size: 24px;
     }
 
     .watermark {
-        font-size: 80px;
+        font-size: 100px;
     }
 
     .scroll-item {
         min-width: 150px;
-        padding: 0 30px;
+        padding: 0 40px;
     }
 
     .spacer {
@@ -164,14 +182,13 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image:
-        repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 2px,
-            rgba(201, 184, 150, 0.03) 2px,
-            rgba(201, 184, 150, 0.03) 4px
-        );
+    background-image: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        rgba(201, 184, 150, 0.02) 2px,
+        rgba(201, 184, 150, 0.02) 4px
+    );
     pointer-events: none;
     z-index: 0;
 }

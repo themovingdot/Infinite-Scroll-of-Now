@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试 - 无尽卷轴</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="scroll-container">
+        <div class="scroll-content" id="scrollContent">
+            <!-- 静态测试内容 -->
+            <div class="scroll-item variant-1">
+                <div class="scroll-item-content">春去秋来</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="scroll-item variant-2">
+                <div class="scroll-item-content">花開花落</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="scroll-item variant-3">
+                <div class="scroll-item-content">水流雲在</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="scroll-item variant-1">
+                <div class="scroll-item-content">行到水窮處</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="scroll-item variant-2">
+                <div class="scroll-item-content">坐看雲起時</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="watermark">此刻</div>
+
+    <script>
+        // 简单的调试信息
+        console.log('页面加载完成');
+        console.log('scroll-content 元素:', document.getElementById('scrollContent'));
+        console.log('scroll-items 数量:', document.querySelectorAll('.scroll-item').length);
+
+        // 初始滚动到中间
+        const container = document.querySelector('.scroll-container');
+        setTimeout(() => {
+            const scrollWidth = container.scrollWidth;
+            const clientWidth = container.clientWidth;
+            const center = (scrollWidth - clientWidth) / 2;
+            container.scrollLeft = center;
+            console.log('scrollWidth:', scrollWidth, 'clientWidth:', clientWidth, 'center:', center);
+        }, 100);
+    </script>
+</body>
+</html>
