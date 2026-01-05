@@ -13,59 +13,10 @@
 
         body {
             font-family: 'Noto Serif SC', 'STSong', 'SimSun', serif;
-            background: #0a0a0a;
+            background: radial-gradient(ellipse at center, #1a1510 0%, #0a0a0a 100%);
             overflow: hidden;
             width: 100vw;
             height: 100vh;
-            position: relative;
-        }
-
-        /* 动态背景 */
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, #1a1510 0%, #0a0a0a 100%);
-            z-index: -2;
-        }
-
-        /* 粒子效果 */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.15;
-        }
-
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #c9b896;
-            border-radius: 50%;
-            animation: float linear infinite;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) translateX(50px);
-                opacity: 0;
-            }
         }
 
         /* 3D 容器 */
@@ -73,141 +24,86 @@
             width: 100%;
             height: 100vh;
             position: relative;
-            perspective: 1200px;
+            perspective: 1500px;
             perspective-origin: 50% 50%;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .scroll-content {
             display: flex;
-            height: 100vh;
             align-items: center;
-            justify-content: center;
-            gap: 0;
-            position: absolute;
-            left: 50%;
-            top: 0;
             transform-style: preserve-3d;
-            transition: transform 0.1s linear;
-        }
-
-        /* 左右填充 */
-        .scroll-content::before,
-        .scroll-content::after {
-            content: '';
-            display: block;
-            min-width: 100vw;
-            height: 100vh;
-            flex-shrink: 0;
+            position: relative;
         }
 
         .scroll-item {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            min-width: 250px;
+            justify-content: center;
+            min-width: 300px;
             height: 100vh;
-            padding: 0 60px;
-            flex-shrink: 0;
             position: relative;
             transform-style: preserve-3d;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* 3D 变换 - 根据位置 */
-        .scroll-item {
-            opacity: 0.2;
-            filter: blur(10px);
-            transform: translateZ(-400px) scale(0.7);
-        }
-
-        .scroll-item.position-1 {
-            opacity: 0.4;
-            filter: blur(6px);
-            transform: translateZ(-200px) scale(0.8) rotateY(15deg);
-        }
-
-        .scroll-item.position-2 {
-            opacity: 0.7;
-            filter: blur(3px);
-            transform: translateZ(-50px) scale(0.9) rotateY(5deg);
-        }
-
-        /* 中心 - 最大最清晰 */
-        .scroll-item.center {
-            opacity: 1;
-            filter: blur(0px);
-            transform: translateZ(100px) scale(1.1);
-            z-index: 100;
-        }
-
-        .scroll-item.position--2 {
-            opacity: 0.7;
-            filter: blur(3px);
-            transform: translateZ(-50px) scale(0.9) rotateY(-5deg);
-        }
-
-        .scroll-item.position--1 {
-            opacity: 0.4;
-            filter: blur(6px);
-            transform: translateZ(-200px) scale(0.8) rotateY(-15deg);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
         }
 
         .scroll-item-content {
-            font-size: 32px;
+            font-size: 36px;
             line-height: 2;
             letter-spacing: 0.3em;
             color: #d4c5a9;
-            position: relative;
-            padding: 20px;
+            padding: 30px;
             writing-mode: vertical-rl;
             text-orientation: upright;
-            text-shadow: 0 0 20px rgba(212, 197, 169, 0.3);
-            transition: all 0.6s ease;
+            text-shadow: 0 0 30px rgba(212, 197, 169, 0.5);
+            transition: all 0.8s ease;
         }
 
-        .scroll-item.center .scroll-item-content {
-            color: #f5e6d3;
-            text-shadow: 0 0 40px rgba(245, 230, 211, 0.8),
-                         0 0 80px rgba(245, 230, 211, 0.4);
-            font-size: 48px;
+        /* 3D 位置效果 */
+        .scroll-item {
+            opacity: 0.3;
+            filter: blur(8px);
+            transform: translateZ(-300px) scale(0.75);
         }
 
-        .scroll-item-content::before,
-        .scroll-item-content::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 50px;
-            height: 1px;
-            background: linear-gradient(to right, transparent, #c9b896, transparent);
-            opacity: 0;
-            transition: opacity 0.6s ease;
+        .scroll-item:nth-child(5n+2) {
+            opacity: 0.5;
+            filter: blur(5px);
+            transform: translateZ(-150px) scale(0.85) rotateY(10deg);
         }
 
-        .scroll-item.center .scroll-item-content::before,
-        .scroll-item.center .scroll-item-content::after {
+        .scroll-item:nth-child(5n+3) {
             opacity: 1;
+            filter: blur(0px);
+            transform: translateZ(150px) scale(1.15);
+            z-index: 10;
         }
 
-        .scroll-item-content::before {
-            right: -35px;
+        .scroll-item:nth-child(5n+3) .scroll-item-content {
+            color: #f5e6d3;
+            font-size: 52px;
+            text-shadow: 0 0 50px rgba(245, 230, 211, 1),
+                         0 0 100px rgba(245, 230, 211, 0.5);
         }
 
-        .scroll-item-content::after {
-            left: -35px;
+        .scroll-item:nth-child(5n+4) {
+            opacity: 0.5;
+            filter: blur(5px);
+            transform: translateZ(-150px) scale(0.85) rotateY(-10deg);
         }
 
-        /* 水印 - 此刻 */
+        /* 水印 */
         .watermark {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 180px;
-            color: rgba(201, 184, 150, 0.03);
+            font-size: 200px;
+            color: rgba(201, 184, 150, 0.04);
             writing-mode: vertical-rl;
             text-orientation: upright;
             letter-spacing: 0.5em;
@@ -219,73 +115,11 @@
 
         @keyframes pulse {
             0%, 100% {
-                opacity: 0.03;
-                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.04;
             }
             50% {
-                opacity: 0.06;
-                transform: translate(-50%, -50%) scale(1.02);
+                opacity: 0.08;
             }
-        }
-
-        /* 变体样式 */
-        .scroll-item.variant-1 .scroll-item-content {
-            letter-spacing: 0.25em;
-        }
-
-        .scroll-item.variant-2 .scroll-item-content {
-            letter-spacing: 0.35em;
-        }
-
-        .scroll-item.variant-3 .scroll-item-content {
-            letter-spacing: 0.28em;
-        }
-
-        /* 呼吸空间 */
-        .spacer {
-            min-width: 200px;
-            height: 100vh;
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        .spacer::after {
-            content: '◦';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: rgba(201, 184, 150, 0.15);
-            font-size: 12px;
-            animation: breathe 3s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-            0%, 100% {
-                opacity: 0.15;
-                transform: translate(-50%, -50%) scale(1);
-            }
-            50% {
-                opacity: 0.3;
-                transform: translate(-50%, -50%) scale(1.2);
-            }
-        }
-
-        /* 中心线指示器 */
-        .center-line {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            width: 1px;
-            height: 100vh;
-            background: linear-gradient(to bottom,
-                transparent 0%,
-                rgba(201, 184, 150, 0.1) 20%,
-                rgba(201, 184, 150, 0.2) 50%,
-                rgba(201, 184, 150, 0.1) 80%,
-                transparent 100%);
-            pointer-events: none;
-            z-index: 5;
         }
 
         /* 渐变遮罩 */
@@ -296,264 +130,132 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(to right,
-                rgba(10, 10, 10, 0.95) 0%,
-                transparent 30%,
-                transparent 70%,
-                rgba(10, 10, 10, 0.95) 100%);
+                #0a0a0a 0%,
+                transparent 25%,
+                transparent 75%,
+                #0a0a0a 100%);
             pointer-events: none;
-            z-index: 10;
+            z-index: 5;
         }
 
-        /* 响应式 */
-        @media (max-width: 768px) {
-            .scroll-container {
-                perspective: 800px;
-            }
+        /* 中心线 */
+        .center-line {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            width: 1px;
+            height: 100vh;
+            background: linear-gradient(to bottom,
+                transparent,
+                rgba(201, 184, 150, 0.2) 50%,
+                transparent);
+            z-index: 6;
+        }
 
-            .scroll-item-content {
-                font-size: 24px;
-                padding: 15px;
+        /* 动画 */
+        @keyframes slide {
+            0% {
+                transform: translateX(0);
             }
-
-            .scroll-item.center .scroll-item-content {
-                font-size: 36px;
-            }
-
-            .watermark {
-                font-size: 120px;
-            }
-
-            .scroll-item {
-                min-width: 180px;
-                padding: 0 40px;
-            }
-
-            .spacer {
-                min-width: 140px;
+            100% {
+                transform: translateX(-450px);
             }
         }
 
-        /* 加载动画 */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .scroll-content {
+            animation: slide 8s linear infinite;
         }
 
-        .watermark {
-            animation: fadeInUp 1.5s ease-out, pulse 4s ease-in-out infinite 1.5s;
+        .spacer {
+            min-width: 150px;
+            flex-shrink: 0;
         }
     </style>
 </head>
 <body>
-    <div class="background"></div>
-    <div class="particles" id="particles"></div>
-    <div class="center-line"></div>
     <div class="fade-overlay"></div>
+    <div class="center-line"></div>
 
     <div class="scroll-container">
-        <div class="scroll-content" id="scrollContent">
-            <!-- 内容将通过 JavaScript 动态生成 -->
+        <div class="scroll-content" id="content">
+            <!-- 初始内容 -->
+            <div class="scroll-item"><div class="scroll-item-content">春去秋來</div></div>
+            <div class="spacer"></div>
+            <div class="scroll-item"><div class="scroll-item-content">雲無心以出岫</div></div>
+            <div class="spacer"></div>
+            <div class="scroll-item"><div class="scroll-item-content">花開花落</div></div>
+            <div class="spacer"></div>
+            <div class="scroll-item"><div class="scroll-item-content">水流雲在</div></div>
+            <div class="spacer"></div>
+            <div class="scroll-item"><div class="scroll-item-content">行到水窮處</div></div>
+            <div class="spacer"></div>
+            <div class="scroll-item"><div class="scroll-item-content">坐看雲起時</div></div>
+            <div class="spacer"></div>
+            <div class="scroll-item"><div class="scroll-item-content">明月松間照</div></div>
+            <div class="spacer"></div>
+            <div class="scroll-item"><div class="scroll-item-content">清泉石上流</div></div>
+            <div class="spacer"></div>
+            <div class="scroll-item"><div class="scroll-item-content">去留無意</div></div>
+            <div class="spacer"></div>
+            <div class="scroll-item"><div class="scroll-item-content">寵辱不驚</div></div>
+            <div class="spacer"></div>
         </div>
     </div>
 
     <div class="watermark">此刻</div>
 
     <script>
-        // 创建粒子
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 40;
+        console.log('Infinite Scroll loading...');
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                particle.style.opacity = Math.random() * 0.5 + 0.2;
-                particlesContainer.appendChild(particle);
-            }
+        const content = document.getElementById('content');
+        const poems = [
+            '春去秋來', '雲無心以出岫', '鳥倦飛而知還',
+            '花開花落', '水流雲在', '行到水窮處',
+            '坐看雲起時', '明月松間照', '清泉石上流',
+            '空山新雨後', '采菊東籬下', '悠然見南山',
+            '此中有真意', '去留無意', '寵辱不驚',
+            '一花一世界', '一葉一菩提', '當下即是'
+        ];
+
+        let index = 0;
+        let offset = 0;
+
+        function addItem() {
+            const item = document.createElement('div');
+            item.className = 'scroll-item';
+            const text = document.createElement('div');
+            text.className = 'scroll-item-content';
+            text.textContent = poems[index % poems.length];
+            item.appendChild(text);
+
+            const spacer = document.createElement('div');
+            spacer.className = 'spacer';
+
+            content.appendChild(item);
+            content.appendChild(spacer);
+            index++;
         }
 
-        // 无尽卷轴 - 3D 版本
-        class InfiniteScrollOfNow {
-            constructor() {
-                this.content = document.getElementById('scrollContent');
-                this.contentPool = this.getContentPool();
-                this.currentIndex = 0;
-                this.scrollOffset = 0;
-                this.autoScrollSpeed = 0.5; // 自动滚动速度
-                this.itemWidth = 450; // 每个 item + spacer 的宽度
-                this.items = [];
+        function animate() {
+            offset += 0.5;
 
-                this.init();
-            }
-
-            getContentPool() {
-                return [
-                    '春去秋來',
-                    '雲無心以出岫',
-                    '鳥倦飛而知還',
-                    '花開花落',
-                    '水流雲在',
-                    '行到水窮處',
-                    '坐看雲起時',
-                    '明月松間照',
-                    '清泉石上流',
-                    '空山新雨後',
-                    '天氣晚來秋',
-                    '采菊東籬下',
-                    '悠然見南山',
-                    '山氣日夕佳',
-                    '飛鳥相與還',
-                    '此中有真意',
-                    '欲辨已忘言',
-                    '萬物靜觀皆自得',
-                    '四時佳興與人同',
-                    '隨處遇之',
-                    '不滯於物',
-                    '去留無意',
-                    '寵辱不驚',
-                    '閑看庭前花開花落',
-                    '漫隨天外雲卷雲舒',
-                    '一花一世界',
-                    '一葉一菩提',
-                    '念念不住',
-                    '前念今念後念',
-                    '念念不相待',
-                    '剎那即永恆',
-                    '當下即是',
-                ];
-            }
-
-            init() {
-                console.log('无尽卷轴 3D 初始化...');
-                this.createInitialContent();
-                this.update3DPositions();
-
-                // 开始自动滚动动画
-                this.startAutoScroll();
-
-                console.log('初始化完成！内容自动流动中...');
-            }
-
-            createInitialContent() {
-                const itemCount = 15;
-                for (let i = 0; i < itemCount; i++) {
-                    this.addItem();
+            if (offset >= 450) {
+                offset = 0;
+                // Remove first two elements
+                if (content.children.length > 4) {
+                    content.removeChild(content.firstChild);
+                    content.removeChild(content.firstChild);
                 }
+                addItem();
             }
 
-            startAutoScroll() {
-                const animate = () => {
-                    // 自动向右滚动
-                    this.scrollOffset += this.autoScrollSpeed;
-
-                    // 循环逻辑
-                    if (this.scrollOffset >= this.itemWidth) {
-                        this.scrollOffset -= this.itemWidth;
-                        // 移除第一个，添加到最后
-                        this.rotateItems();
-                    }
-
-                    // 更新显示
-                    this.updateTransform();
-                    this.update3DPositions();
-
-                    requestAnimationFrame(animate);
-                };
-                animate();
-            }
-
-            updateTransform() {
-                const translateX = -this.scrollOffset;
-                this.content.style.transform = `translateX(${translateX}px)`;
-            }
-
-            update3DPositions() {
-                const allElements = Array.from(this.content.children);
-                const items = allElements.filter(el => el.classList.contains('scroll-item'));
-
-                items.forEach((item, index) => {
-                    // 移除所有位置类
-                    item.classList.remove('center', 'position-1', 'position-2', 'position--1', 'position--2');
-
-                    // 计算相对中心的位置
-                    const centerIndex = Math.floor(items.length / 2);
-                    const relativePosition = index - centerIndex;
-
-                    // 应用位置类
-                    if (relativePosition === 0) {
-                        item.classList.add('center');
-                    } else if (relativePosition === 1) {
-                        item.classList.add('position-1');
-                    } else if (relativePosition === 2) {
-                        item.classList.add('position-2');
-                    } else if (relativePosition === -1) {
-                        item.classList.add('position--1');
-                    } else if (relativePosition === -2) {
-                        item.classList.add('position--2');
-                    }
-                });
-            }
-
-            rotateItems() {
-                // 移除前两个元素（item + spacer）
-                if (this.content.children.length > 2) {
-                    this.content.removeChild(this.content.children[0]);
-                    this.content.removeChild(this.content.children[0]);
-                }
-
-                // 添加新元素到末尾
-                this.addItem();
-            }
-
-            addItem() {
-                const item = this.createScrollItem();
-                const spacer = this.createSpacer();
-
-                this.content.appendChild(item);
-                this.content.appendChild(spacer);
-
-                this.items.push(item);
-            }
-
-            createScrollItem() {
-                const item = document.createElement('div');
-                item.className = 'scroll-item';
-
-                const text = this.contentPool[this.currentIndex % this.contentPool.length];
-                this.currentIndex++;
-
-                const variant = Math.floor(Math.random() * 3) + 1;
-                item.classList.add(`variant-${variant}`);
-
-                const content = document.createElement('div');
-                content.className = 'scroll-item-content';
-                content.textContent = text;
-
-                item.appendChild(content);
-                return item;
-            }
-
-            createSpacer() {
-                const spacer = document.createElement('div');
-                spacer.className = 'spacer';
-                return spacer;
-            }
+            content.style.transform = `translateX(-${offset}px)`;
+            requestAnimationFrame(animate);
         }
 
-        // 页面加载完成后初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-            new InfiniteScrollOfNow();
-        });
+        // Start
+        console.log('Starting animation...');
+        requestAnimationFrame(animate);
     </script>
 </body>
 </html>
