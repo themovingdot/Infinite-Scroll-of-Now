@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>无尽卷轴 · Infinite Scroll of Now</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200;300;400;500;600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,88 +15,170 @@
         }
 
         body {
-            font-family: 'Noto Serif SC', 'STSong', 'SimSun', serif;
+            font-family: 'Noto Serif TC', 'Ma Shan Zheng', serif;
             background: radial-gradient(ellipse at center, #1a1510 0%, #0a0a0a 100%);
             overflow: hidden;
             width: 100vw;
             height: 100vh;
         }
 
-        /* 3D 容器 */
-        .scroll-container {
+        /* 3D 舞台 */
+        .stage {
             width: 100%;
             height: 100vh;
             position: relative;
-            perspective: 1500px;
+            perspective: 2000px;
             perspective-origin: 50% 50%;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        .scroll-content {
+        .scroll-track {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
             display: flex;
             align-items: center;
-            transform-style: preserve-3d;
-            position: relative;
+            left: 0;
+            top: 0;
         }
 
         .scroll-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 300px;
-            height: 100vh;
-            position: relative;
+            position: absolute;
+            left: 50%;
+            top: 50%;
             transform-style: preserve-3d;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            flex-shrink: 0;
+            will-change: transform;
+            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .scroll-item-content {
-            font-size: 36px;
-            line-height: 2;
-            letter-spacing: 0.3em;
-            color: #d4c5a9;
-            padding: 30px;
             writing-mode: vertical-rl;
             text-orientation: upright;
-            text-shadow: 0 0 30px rgba(212, 197, 169, 0.5);
-            transition: all 0.8s ease;
+            white-space: nowrap;
+            padding: 40px 30px;
+            position: relative;
+            font-weight: 400;
+            transition: all 1.2s ease;
         }
 
-        /* 3D 位置效果 */
-        .scroll-item {
+        /* 5 个深度层次 */
+
+        /* 层 5 - 最远处 */
+        .layer-5 {
+            transform: translate(-50%, -50%)
+                       translateZ(-800px)
+                       scale(0.4)
+                       rotateY(25deg);
+            opacity: 0.15;
+            filter: blur(15px);
+        }
+
+        .layer-5 .scroll-item-content {
+            font-size: 24px;
+            color: #6b5d4f;
+            letter-spacing: 0.2em;
+            text-shadow: none;
+        }
+
+        /* 层 4 - 很远 */
+        .layer-4 {
+            transform: translate(-50%, -50%)
+                       translateZ(-500px)
+                       scale(0.55)
+                       rotateY(18deg);
             opacity: 0.3;
-            filter: blur(8px);
-            transform: translateZ(-300px) scale(0.75);
+            filter: blur(10px);
         }
 
-        .scroll-item:nth-child(5n+2) {
+        .layer-4 .scroll-item-content {
+            font-size: 28px;
+            color: #8b7355;
+            letter-spacing: 0.22em;
+            text-shadow: 0 0 10px rgba(139, 115, 85, 0.3);
+        }
+
+        /* 层 3 - 中等距离 */
+        .layer-3 {
+            transform: translate(-50%, -50%)
+                       translateZ(-250px)
+                       scale(0.7)
+                       rotateY(10deg);
             opacity: 0.5;
-            filter: blur(5px);
-            transform: translateZ(-150px) scale(0.85) rotateY(10deg);
+            filter: blur(6px);
         }
 
-        .scroll-item:nth-child(5n+3) {
+        .layer-3 .scroll-item-content {
+            font-size: 34px;
+            color: #a89272;
+            letter-spacing: 0.25em;
+            text-shadow: 0 0 20px rgba(168, 146, 114, 0.4);
+        }
+
+        /* 层 2 - 接近前面 */
+        .layer-2 {
+            transform: translate(-50%, -50%)
+                       translateZ(-80px)
+                       scale(0.88)
+                       rotateY(4deg);
+            opacity: 0.75;
+            filter: blur(2px);
+        }
+
+        .layer-2 .scroll-item-content {
+            font-size: 42px;
+            color: #c9b896;
+            letter-spacing: 0.28em;
+            text-shadow: 0 0 30px rgba(201, 184, 150, 0.5);
+        }
+
+        /* 层 1 - 最前面（此刻） */
+        .layer-1 {
+            transform: translate(-50%, -50%)
+                       translateZ(200px)
+                       scale(1.2);
             opacity: 1;
             filter: blur(0px);
-            transform: translateZ(150px) scale(1.15);
-            z-index: 10;
+            z-index: 100;
         }
 
-        .scroll-item:nth-child(5n+3) .scroll-item-content {
+        .layer-1 .scroll-item-content {
+            font-size: 56px;
             color: #f5e6d3;
-            font-size: 52px;
-            text-shadow: 0 0 50px rgba(245, 230, 211, 1),
-                         0 0 100px rgba(245, 230, 211, 0.5);
+            letter-spacing: 0.35em;
+            font-weight: 600;
+            text-shadow: 0 0 40px rgba(245, 230, 211, 1),
+                         0 0 80px rgba(245, 230, 211, 0.6),
+                         0 0 120px rgba(245, 230, 211, 0.3);
         }
 
-        .scroll-item:nth-child(5n+4) {
-            opacity: 0.5;
-            filter: blur(5px);
-            transform: translateZ(-150px) scale(0.85) rotateY(-10deg);
+        /* 装饰线条 - 只在最前层显示 */
+        .layer-1 .scroll-item-content::before,
+        .layer-1 .scroll-item-content::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(to right,
+                transparent,
+                rgba(245, 230, 211, 0.8),
+                transparent);
+            transform: translateY(-50%);
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        .layer-1 .scroll-item-content::before {
+            right: -80px;
+        }
+
+        .layer-1 .scroll-item-content::after {
+            left: -80px;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
         /* 水印 */
@@ -102,160 +187,269 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 200px;
-            color: rgba(201, 184, 150, 0.04);
+            font-size: 220px;
+            color: rgba(201, 184, 150, 0.025);
             writing-mode: vertical-rl;
             text-orientation: upright;
-            letter-spacing: 0.5em;
+            letter-spacing: 0.6em;
             pointer-events: none;
             z-index: 1;
-            font-weight: 100;
-            animation: pulse 4s ease-in-out infinite;
+            font-weight: 200;
+            animation: breathe 6s ease-in-out infinite;
         }
 
-        @keyframes pulse {
+        @keyframes breathe {
             0%, 100% {
-                opacity: 0.04;
+                opacity: 0.025;
+                transform: translate(-50%, -50%) scale(1);
             }
             50% {
-                opacity: 0.08;
+                opacity: 0.05;
+                transform: translate(-50%, -50%) scale(1.03);
+            }
+        }
+
+        /* 环境光效 */
+        .ambient-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle,
+                rgba(245, 230, 211, 0.08) 0%,
+                transparent 70%);
+            pointer-events: none;
+            z-index: 2;
+            animation: pulse-glow 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 0.8;
             }
         }
 
         /* 渐变遮罩 */
-        .fade-overlay {
+        .vignette {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to right,
-                #0a0a0a 0%,
-                transparent 25%,
-                transparent 75%,
-                #0a0a0a 100%);
+            background: radial-gradient(ellipse at center,
+                transparent 0%,
+                transparent 40%,
+                rgba(10, 10, 10, 0.6) 80%,
+                rgba(10, 10, 10, 0.95) 100%);
             pointer-events: none;
-            z-index: 5;
+            z-index: 50;
         }
 
-        /* 中心线 */
-        .center-line {
+        /* 中心标记线 */
+        .center-marker {
             position: fixed;
             top: 0;
             left: 50%;
-            width: 1px;
+            width: 2px;
             height: 100vh;
             background: linear-gradient(to bottom,
-                transparent,
-                rgba(201, 184, 150, 0.2) 50%,
-                transparent);
-            z-index: 6;
+                transparent 0%,
+                rgba(245, 230, 211, 0.1) 30%,
+                rgba(245, 230, 211, 0.3) 50%,
+                rgba(245, 230, 211, 0.1) 70%,
+                transparent 100%);
+            z-index: 60;
+            opacity: 0.4;
         }
 
-        /* 动画 */
-        @keyframes slide {
+        /* 粒子装饰 */
+        .particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: rgba(201, 184, 150, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float-particle linear infinite;
+        }
+
+        @keyframes float-particle {
             0% {
-                transform: translateX(0);
+                transform: translateY(110vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(100vh) translateX(0) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateY(10vh) translateX(30px) scale(1);
             }
             100% {
-                transform: translateX(-450px);
+                transform: translateY(0) translateX(50px) scale(0);
+                opacity: 0;
             }
-        }
-
-        .scroll-content {
-            animation: slide 8s linear infinite;
-        }
-
-        .spacer {
-            min-width: 150px;
-            flex-shrink: 0;
         }
     </style>
 </head>
 <body>
-    <div class="fade-overlay"></div>
-    <div class="center-line"></div>
+    <div class="ambient-glow"></div>
+    <div class="vignette"></div>
+    <div class="center-marker"></div>
 
-    <div class="scroll-container">
-        <div class="scroll-content" id="content">
-            <!-- 初始内容 -->
-            <div class="scroll-item"><div class="scroll-item-content">春去秋來</div></div>
-            <div class="spacer"></div>
-            <div class="scroll-item"><div class="scroll-item-content">雲無心以出岫</div></div>
-            <div class="spacer"></div>
-            <div class="scroll-item"><div class="scroll-item-content">花開花落</div></div>
-            <div class="spacer"></div>
-            <div class="scroll-item"><div class="scroll-item-content">水流雲在</div></div>
-            <div class="spacer"></div>
-            <div class="scroll-item"><div class="scroll-item-content">行到水窮處</div></div>
-            <div class="spacer"></div>
-            <div class="scroll-item"><div class="scroll-item-content">坐看雲起時</div></div>
-            <div class="spacer"></div>
-            <div class="scroll-item"><div class="scroll-item-content">明月松間照</div></div>
-            <div class="spacer"></div>
-            <div class="scroll-item"><div class="scroll-item-content">清泉石上流</div></div>
-            <div class="spacer"></div>
-            <div class="scroll-item"><div class="scroll-item-content">去留無意</div></div>
-            <div class="spacer"></div>
-            <div class="scroll-item"><div class="scroll-item-content">寵辱不驚</div></div>
-            <div class="spacer"></div>
+    <div class="stage">
+        <div class="scroll-track" id="track">
+            <!-- 内容动态生成 -->
         </div>
     </div>
 
     <div class="watermark">此刻</div>
 
     <script>
-        console.log('Infinite Scroll loading...');
-
-        const content = document.getElementById('content');
         const poems = [
             '春去秋來', '雲無心以出岫', '鳥倦飛而知還',
             '花開花落', '水流雲在', '行到水窮處',
             '坐看雲起時', '明月松間照', '清泉石上流',
-            '空山新雨後', '采菊東籬下', '悠然見南山',
-            '此中有真意', '去留無意', '寵辱不驚',
-            '一花一世界', '一葉一菩提', '當下即是'
+            '空山新雨後', '天氣晚來秋', '采菊東籬下',
+            '悠然見南山', '山氣日夕佳', '飛鳥相與還',
+            '此中有真意', '欲辨已忘言', '萬物靜觀皆自得',
+            '四時佳興與人同', '隨處遇之', '不滯於物',
+            '去留無意', '寵辱不驚', '閑看庭前花開花落',
+            '漫隨天外雲卷雲舒', '一花一世界', '一葉一菩提',
+            '念念不住', '前念今念後念', '念念不相待',
+            '剎那即永恆', '當下即是'
         ];
 
-        let index = 0;
+        const track = document.getElementById('track');
+        const items = [];
+        let currentIndex = 0;
         let offset = 0;
 
-        function addItem() {
-            const item = document.createElement('div');
-            item.className = 'scroll-item';
-            const text = document.createElement('div');
-            text.className = 'scroll-item-content';
-            text.textContent = poems[index % poems.length];
-            item.appendChild(text);
-
-            const spacer = document.createElement('div');
-            spacer.className = 'spacer';
-
-            content.appendChild(item);
-            content.appendChild(spacer);
-            index++;
+        // 创建粒子
+        function createParticles() {
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (15 + Math.random() * 15) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(particle);
+            }
         }
 
-        function animate() {
-            offset += 0.5;
+        // 创建滚动项
+        function createItem(text) {
+            const item = document.createElement('div');
+            item.className = 'scroll-item';
 
-            if (offset >= 450) {
-                offset = 0;
-                // Remove first two elements
-                if (content.children.length > 4) {
-                    content.removeChild(content.firstChild);
-                    content.removeChild(content.firstChild);
+            const content = document.createElement('div');
+            content.className = 'scroll-item-content';
+            content.textContent = text;
+
+            item.appendChild(content);
+            track.appendChild(item);
+
+            return item;
+        }
+
+        // 初始化 - 创建 11 个项目（5层 x 2 + 中心1个）
+        function init() {
+            for (let i = 0; i < 11; i++) {
+                const item = createItem(poems[currentIndex % poems.length]);
+                items.push(item);
+                currentIndex++;
+            }
+            updatePositions();
+        }
+
+        // 更新所有项目的位置
+        function updatePositions() {
+            const centerIndex = Math.floor(items.length / 2);
+
+            items.forEach((item, index) => {
+                const relativePos = index - centerIndex;
+
+                // 移除所有层级类
+                item.className = 'scroll-item';
+
+                // 根据相对位置分配层级
+                if (relativePos === 0) {
+                    item.classList.add('layer-1'); // 中心
+                } else if (Math.abs(relativePos) === 1) {
+                    item.classList.add('layer-2'); // 左右一步
+                } else if (Math.abs(relativePos) === 2) {
+                    item.classList.add('layer-3'); // 左右两步
+                } else if (Math.abs(relativePos) === 3) {
+                    item.classList.add('layer-4'); // 左右三步
+                } else {
+                    item.classList.add('layer-5'); // 更远
                 }
-                addItem();
+
+                // 水平偏移
+                const spacing = 650;
+                const xOffset = relativePos * spacing;
+                const currentTransform = item.style.transform || '';
+
+                // 保持当前的 3D 变换，只更新水平位置
+                if (!currentTransform.includes('translateX')) {
+                    item.style.transform = `translateX(${xOffset}px)`;
+                }
+            });
+        }
+
+        // 平滑滚动动画
+        function animate() {
+            offset += 0.8; // 滚动速度
+
+            // 应用偏移到所有项目
+            const centerIndex = Math.floor(items.length / 2);
+            items.forEach((item, index) => {
+                const relativePos = index - centerIndex;
+                const spacing = 650;
+                const baseX = relativePos * spacing - offset;
+
+                // 更新 translateX，但保持其他变换
+                const classList = Array.from(item.classList);
+                const layer = classList.find(c => c.startsWith('layer-'));
+
+                if (layer) {
+                    item.style.transform = `translateX(${baseX}px)`;
+                }
+            });
+
+            // 循环逻辑 - 当偏移超过一个间距时
+            if (offset >= 650) {
+                offset = 0;
+
+                // 移除第一个项目
+                const removed = items.shift();
+                track.removeChild(removed);
+
+                // 在末尾添加新项目
+                const newItem = createItem(poems[currentIndex % poems.length]);
+                items.push(newItem);
+                currentIndex++;
+
+                updatePositions();
             }
 
-            content.style.transform = `translateX(-${offset}px)`;
             requestAnimationFrame(animate);
         }
 
-        // Start
-        console.log('Starting animation...');
+        // 启动
+        createParticles();
+        init();
         requestAnimationFrame(animate);
+
+        console.log('无尽卷轴 3D 已启动 - 内容流动中...');
     </script>
 </body>
 </html>
