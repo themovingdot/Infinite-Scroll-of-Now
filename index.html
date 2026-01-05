@@ -13,17 +13,65 @@
 
         body {
             font-family: 'Noto Serif SC', 'STSong', 'SimSun', serif;
-            background: linear-gradient(to bottom, #f5f0e8, #ebe4d8);
+            background: #0a0a0a;
             overflow: hidden;
             width: 100vw;
             height: 100vh;
             position: relative;
         }
 
+        /* 动态背景 */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #1a1510 0%, #0a0a0a 100%);
+            z-index: -2;
+        }
+
+        /* 粒子效果 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #c9b896;
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
         .scroll-container {
             width: 100%;
             height: 100vh;
-            overflow-x: auto;
+            overflow-x: hidden;
             overflow-y: hidden;
             position: relative;
             scrollbar-width: none;
@@ -40,9 +88,10 @@
             align-items: center;
             gap: 0;
             min-width: max-content;
+            transition: transform 0.05s linear;
         }
 
-        /* 左右填充用于居中 */
+        /* 左右填充 */
         .scroll-content::before,
         .scroll-content::after {
             content: '';
@@ -62,24 +111,47 @@
             padding: 0 60px;
             flex-shrink: 0;
             opacity: 0;
-            animation: fadeIn 1s ease forwards;
+            transition: all 0.8s ease-out;
         }
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
+        .scroll-item.visible {
+            opacity: 1;
+        }
+
+        /* 模糊效果 - 核心：只有中心清晰 */
+        .scroll-item {
+            filter: blur(8px) opacity(0.3);
+            transform: scale(0.9);
+        }
+
+        .scroll-item.center {
+            filter: blur(0px) opacity(1);
+            transform: scale(1);
+        }
+
+        .scroll-item.near-center {
+            filter: blur(3px) opacity(0.6);
+            transform: scale(0.95);
         }
 
         .scroll-item-content {
-            font-size: 32px;
+            font-size: 36px;
             line-height: 2;
-            letter-spacing: 0.2em;
-            color: #2c2c2c;
+            letter-spacing: 0.3em;
+            color: #d4c5a9;
             position: relative;
             padding: 20px;
             writing-mode: vertical-rl;
             text-orientation: upright;
+            text-shadow: 0 0 20px rgba(212, 197, 169, 0.3);
+            transition: all 0.6s ease;
+        }
+
+        .scroll-item.center .scroll-item-content {
+            color: #f5e6d3;
+            text-shadow: 0 0 30px rgba(245, 230, 211, 0.6),
+                         0 0 60px rgba(245, 230, 211, 0.3);
+            font-size: 42px;
         }
 
         .scroll-item-content::before,
@@ -88,55 +160,70 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 30px;
+            width: 40px;
             height: 1px;
             background: linear-gradient(to right, transparent, #c9b896, transparent);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .scroll-item.center .scroll-item-content::before,
+        .scroll-item.center .scroll-item-content::after {
+            opacity: 1;
         }
 
         .scroll-item-content::before {
-            right: -25px;
+            right: -30px;
         }
 
         .scroll-item-content::after {
-            left: -25px;
+            left: -30px;
         }
 
-        /* 水印 */
+        /* 水印 - 此刻 */
         .watermark {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 140px;
-            color: rgba(201, 184, 150, 0.06);
+            font-size: 160px;
+            color: rgba(201, 184, 150, 0.04);
             writing-mode: vertical-rl;
             text-orientation: upright;
-            letter-spacing: 0.3em;
+            letter-spacing: 0.5em;
             pointer-events: none;
             z-index: 1;
-            font-weight: 200;
+            font-weight: 100;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.04;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                opacity: 0.08;
+                transform: translate(-50%, -50%) scale(1.02);
+            }
         }
 
         /* 变体样式 */
         .scroll-item.variant-1 .scroll-item-content {
-            color: #3a3a3a;
-            font-size: 28px;
-        }
-
-        .scroll-item.variant-2 .scroll-item-content {
-            color: #252525;
-            font-size: 36px;
             letter-spacing: 0.25em;
         }
 
+        .scroll-item.variant-2 .scroll-item-content {
+            letter-spacing: 0.35em;
+        }
+
         .scroll-item.variant-3 .scroll-item-content {
-            color: #2c2c2c;
-            opacity: 0.92;
+            letter-spacing: 0.28em;
         }
 
         /* 呼吸空间 */
         .spacer {
-            min-width: 150px;
+            min-width: 180px;
             height: 100vh;
             flex-shrink: 0;
             position: relative;
@@ -148,27 +235,68 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: rgba(201, 184, 150, 0.25);
-            font-size: 14px;
+            color: rgba(201, 184, 150, 0.15);
+            font-size: 12px;
+            animation: breathe 3s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% {
+                opacity: 0.15;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+        }
+
+        /* 中心线指示器 */
+        .center-line {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            width: 1px;
+            height: 100vh;
+            background: linear-gradient(to bottom,
+                transparent 0%,
+                rgba(201, 184, 150, 0.15) 20%,
+                rgba(201, 184, 150, 0.3) 50%,
+                rgba(201, 184, 150, 0.15) 80%,
+                transparent 100%);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* 渐变遮罩 */
+        .fade-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right,
+                rgba(10, 10, 10, 0.9) 0%,
+                transparent 25%,
+                transparent 75%,
+                rgba(10, 10, 10, 0.9) 100%);
+            pointer-events: none;
+            z-index: 10;
         }
 
         /* 响应式 */
         @media (max-width: 768px) {
             .scroll-item-content {
-                font-size: 24px;
+                font-size: 28px;
                 padding: 15px;
             }
 
-            .scroll-item.variant-1 .scroll-item-content {
-                font-size: 22px;
-            }
-
-            .scroll-item.variant-2 .scroll-item-content {
-                font-size: 26px;
+            .scroll-item.center .scroll-item-content {
+                font-size: 34px;
             }
 
             .watermark {
-                font-size: 100px;
+                font-size: 120px;
             }
 
             .scroll-item {
@@ -177,31 +305,33 @@
             }
 
             .spacer {
-                min-width: 100px;
+                min-width: 120px;
             }
         }
 
-        /* 纹理效果 */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: repeating-linear-gradient(
-                90deg,
-                transparent,
-                transparent 2px,
-                rgba(201, 184, 150, 0.02) 2px,
-                rgba(201, 184, 150, 0.02) 4px
-            );
-            pointer-events: none;
-            z-index: 0;
+        /* 加载动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .watermark {
+            animation: fadeInUp 1.5s ease-out, pulse 4s ease-in-out infinite 1.5s;
         }
     </style>
 </head>
 <body>
+    <div class="background"></div>
+    <div class="particles" id="particles"></div>
+    <div class="center-line"></div>
+    <div class="fade-overlay"></div>
+
     <div class="scroll-container">
         <div class="scroll-content" id="scrollContent">
             <!-- 内容将通过 JavaScript 动态生成 -->
@@ -211,6 +341,22 @@
     <div class="watermark">此刻</div>
 
     <script>
+        // 创建粒子
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.opacity = Math.random() * 0.5 + 0.2;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
         // 无尽卷轴 - 永远的"此刻"
         class InfiniteScrollOfNow {
             constructor() {
@@ -220,6 +366,9 @@
                 this.currentIndex = 0;
                 this.isScrolling = false;
                 this.scrollThreshold = 300;
+                this.autoScrollSpeed = 0.3; // 自动滚动速度
+                this.scrollPosition = 0;
+                this.isAutoScrolling = true;
 
                 this.init();
             }
@@ -267,18 +416,77 @@
 
                 setTimeout(() => {
                     this.centerScroll();
-                    console.log('初始化完成！内容项数量:', document.querySelectorAll('.scroll-item').length);
+                    this.updateBlurEffect();
+                    console.log('初始化完成！');
+
+                    // 开始自动滚动
+                    this.startAutoScroll();
                 }, 100);
 
-                this.container.addEventListener('scroll', () => this.handleScroll());
-                this.container.style.scrollBehavior = 'auto';
+                // 监听手动滚动
+                this.container.addEventListener('scroll', () => {
+                    this.isAutoScrolling = false;
+                    this.handleScroll();
+
+                    // 3秒后恢复自动滚动
+                    clearTimeout(this.autoScrollTimeout);
+                    this.autoScrollTimeout = setTimeout(() => {
+                        this.isAutoScrolling = true;
+                    }, 3000);
+                });
+
+                // 监听滚动事件以更新模糊效果
+                this.container.addEventListener('scroll', () => this.updateBlurEffect());
             }
 
             createInitialContent() {
-                const itemCount = 15;
+                const itemCount = 20;
                 for (let i = 0; i < itemCount; i++) {
                     this.addItem('append');
                 }
+
+                // 显示动画
+                setTimeout(() => {
+                    document.querySelectorAll('.scroll-item').forEach((item, index) => {
+                        setTimeout(() => {
+                            item.classList.add('visible');
+                        }, index * 50);
+                    });
+                }, 100);
+            }
+
+            startAutoScroll() {
+                const animate = () => {
+                    if (this.isAutoScrolling) {
+                        this.scrollPosition += this.autoScrollSpeed;
+                        this.container.scrollLeft = this.scrollPosition;
+                        this.handleScroll();
+                    }
+                    requestAnimationFrame(animate);
+                };
+                animate();
+            }
+
+            updateBlurEffect() {
+                const items = document.querySelectorAll('.scroll-item');
+                const containerRect = this.container.getBoundingClientRect();
+                const centerX = containerRect.width / 2;
+
+                items.forEach(item => {
+                    const itemRect = item.getBoundingClientRect();
+                    const itemCenterX = itemRect.left + itemRect.width / 2 - containerRect.left;
+                    const distance = Math.abs(itemCenterX - centerX);
+
+                    // 移除所有类
+                    item.classList.remove('center', 'near-center');
+
+                    // 根据距离中心的位置添加类
+                    if (distance < 100) {
+                        item.classList.add('center');
+                    } else if (distance < 300) {
+                        item.classList.add('near-center');
+                    }
+                });
             }
 
             addItem(position = 'append') {
@@ -292,6 +500,11 @@
                     this.content.appendChild(item);
                     this.content.appendChild(spacer);
                 }
+
+                // 添加后立即应用visible类
+                setTimeout(() => {
+                    item.classList.add('visible');
+                }, 50);
             }
 
             createScrollItem() {
@@ -333,6 +546,7 @@
                         this.rebalance(scrollLeft, center);
                     }
 
+                    this.updateBlurEffect();
                     this.isScrolling = false;
                 });
             }
@@ -373,11 +587,13 @@
                 const center = (scrollWidth - clientWidth) / 2;
 
                 this.container.scrollLeft = center;
+                this.scrollPosition = center;
             }
         }
 
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
             new InfiniteScrollOfNow();
         });
     </script>
