@@ -30,9 +30,8 @@ body {
     display: inline-flex;
     height: 100vh;
     padding: 0 50vw;
-    writing-mode: vertical-rl;
-    text-orientation: upright;
     position: relative;
+    z-index: 10;
 }
 
 .scroll-item {
@@ -40,19 +39,17 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-width: 300px;
+    min-width: 200px;
     height: 100vh;
-    padding: 60px 40px;
+    padding: 0 60px;
     position: relative;
     opacity: 0;
-    transform: translateY(20px);
-    animation: fadeIn 0.8s ease forwards;
+    animation: fadeIn 1s ease forwards;
 }
 
 @keyframes fadeIn {
     to {
         opacity: 1;
-        transform: translateY(0);
     }
 }
 
@@ -64,25 +61,27 @@ body {
     text-align: center;
     position: relative;
     padding: 40px 20px;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
 }
 
 .scroll-item-content::before,
 .scroll-item-content::after {
     content: '';
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 1px;
-    height: 60px;
-    background: linear-gradient(to bottom, transparent, #c9b896, transparent);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #c9b896, transparent);
 }
 
 .scroll-item-content::before {
-    top: -40px;
+    right: -30px;
 }
 
 .scroll-item-content::after {
-    bottom: -40px;
+    left: -30px;
 }
 
 /* 水印 - "此刻" */
@@ -120,7 +119,7 @@ body {
 
 /* 呼吸空间 */
 .spacer {
-    min-width: 200px;
+    min-width: 150px;
     height: 100vh;
     position: relative;
 }
@@ -133,6 +132,7 @@ body {
     transform: translate(-50%, -50%);
     color: rgba(201, 184, 150, 0.3);
     font-size: 16px;
+    writing-mode: horizontal-tb;
 }
 
 /* 响应式设计 */
@@ -147,8 +147,12 @@ body {
     }
 
     .scroll-item {
-        min-width: 250px;
-        padding: 40px 20px;
+        min-width: 150px;
+        padding: 0 30px;
+    }
+
+    .spacer {
+        min-width: 100px;
     }
 }
 
