@@ -27,7 +27,7 @@
             width: 100%;
             height: 100vh;
             position: relative;
-            perspective: 2000px;
+            perspective: 1800px;
             perspective-origin: 50% 50%;
             overflow: hidden;
         }
@@ -48,147 +48,53 @@
             left: 50%;
             top: 50%;
             transform-style: preserve-3d;
-            will-change: transform;
-            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform, opacity, filter;
         }
 
         .scroll-item-content {
             writing-mode: vertical-rl;
             text-orientation: upright;
             white-space: nowrap;
-            padding: 40px 30px;
+            padding: 50px 40px;
             position: relative;
             font-weight: 400;
-            transition: all 1.2s ease;
+            color: #d4c5a9;
+            font-size: 40px;
+            letter-spacing: 0.3em;
         }
 
-        /* 5 个深度层次 */
-
-        /* 层 5 - 最远处 */
-        .layer-5 {
-            transform: translate(-50%, -50%)
-                       translateZ(-800px)
-                       scale(0.4)
-                       rotateY(25deg);
-            opacity: 0.15;
-            filter: blur(15px);
-        }
-
-        .layer-5 .scroll-item-content {
-            font-size: 24px;
-            color: #6b5d4f;
-            letter-spacing: 0.2em;
-            text-shadow: none;
-        }
-
-        /* 层 4 - 很远 */
-        .layer-4 {
-            transform: translate(-50%, -50%)
-                       translateZ(-500px)
-                       scale(0.55)
-                       rotateY(18deg);
-            opacity: 0.3;
-            filter: blur(10px);
-        }
-
-        .layer-4 .scroll-item-content {
-            font-size: 28px;
-            color: #8b7355;
-            letter-spacing: 0.22em;
-            text-shadow: 0 0 10px rgba(139, 115, 85, 0.3);
-        }
-
-        /* 层 3 - 中等距离 */
-        .layer-3 {
-            transform: translate(-50%, -50%)
-                       translateZ(-250px)
-                       scale(0.7)
-                       rotateY(10deg);
-            opacity: 0.5;
-            filter: blur(6px);
-        }
-
-        .layer-3 .scroll-item-content {
-            font-size: 34px;
-            color: #a89272;
-            letter-spacing: 0.25em;
-            text-shadow: 0 0 20px rgba(168, 146, 114, 0.4);
-        }
-
-        /* 层 2 - 接近前面 */
-        .layer-2 {
-            transform: translate(-50%, -50%)
-                       translateZ(-80px)
-                       scale(0.88)
-                       rotateY(4deg);
-            opacity: 0.75;
-            filter: blur(2px);
-        }
-
-        .layer-2 .scroll-item-content {
-            font-size: 42px;
-            color: #c9b896;
-            letter-spacing: 0.28em;
-            text-shadow: 0 0 30px rgba(201, 184, 150, 0.5);
-        }
-
-        /* 层 1 - 最前面（此刻） */
-        .layer-1 {
-            transform: translate(-50%, -50%)
-                       translateZ(200px)
-                       scale(1.2);
-            opacity: 1;
-            filter: blur(0px);
-            z-index: 100;
-        }
-
-        .layer-1 .scroll-item-content {
-            font-size: 56px;
-            color: #f5e6d3;
-            letter-spacing: 0.35em;
-            font-weight: 600;
-            text-shadow: 0 0 40px rgba(245, 230, 211, 1),
-                         0 0 80px rgba(245, 230, 211, 0.6),
-                         0 0 120px rgba(245, 230, 211, 0.3);
-        }
-
-        /* 装饰线条 - 只在最前层显示 */
-        .layer-1 .scroll-item-content::before,
-        .layer-1 .scroll-item-content::after {
+        /* 装饰线条 */
+        .scroll-item-content::before,
+        .scroll-item-content::after {
             content: '';
             position: absolute;
             top: 50%;
-            width: 60px;
+            width: 0px;
             height: 2px;
             background: linear-gradient(to right,
                 transparent,
                 rgba(245, 230, 211, 0.8),
                 transparent);
             transform: translateY(-50%);
-            animation: glow 3s ease-in-out infinite;
+            transition: all 0.6s ease;
         }
 
-        .layer-1 .scroll-item-content::before {
-            right: -80px;
+        .scroll-item-content::before {
+            right: -20px;
         }
 
-        .layer-1 .scroll-item-content::after {
-            left: -80px;
+        .scroll-item-content::after {
+            left: -20px;
         }
 
-        @keyframes glow {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        /* 水印 */
+        /* 水印 - 更明显 */
         .watermark {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 220px;
-            color: rgba(201, 184, 150, 0.025);
+            font-size: 280px;
+            color: rgba(201, 184, 150, 0.08);
             writing-mode: vertical-rl;
             text-orientation: upright;
             letter-spacing: 0.6em;
@@ -200,12 +106,12 @@
 
         @keyframes breathe {
             0%, 100% {
-                opacity: 0.025;
+                opacity: 0.08;
                 transform: translate(-50%, -50%) scale(1);
             }
             50% {
-                opacity: 0.05;
-                transform: translate(-50%, -50%) scale(1.03);
+                opacity: 0.15;
+                transform: translate(-50%, -50%) scale(1.05);
             }
         }
 
@@ -215,10 +121,10 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
+            width: 800px;
+            height: 800px;
             background: radial-gradient(circle,
-                rgba(245, 230, 211, 0.08) 0%,
+                rgba(245, 230, 211, 0.12) 0%,
                 transparent 70%);
             pointer-events: none;
             z-index: 2;
@@ -228,11 +134,11 @@
         @keyframes pulse-glow {
             0%, 100% {
                 transform: translate(-50%, -50%) scale(1);
-                opacity: 0.5;
+                opacity: 0.6;
             }
             50% {
-                transform: translate(-50%, -50%) scale(1.1);
-                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(1.15);
+                opacity: 1;
             }
         }
 
@@ -245,9 +151,9 @@
             height: 100%;
             background: radial-gradient(ellipse at center,
                 transparent 0%,
-                transparent 40%,
-                rgba(10, 10, 10, 0.6) 80%,
-                rgba(10, 10, 10, 0.95) 100%);
+                transparent 35%,
+                rgba(10, 10, 10, 0.5) 75%,
+                rgba(10, 10, 10, 0.9) 100%);
             pointer-events: none;
             z-index: 50;
         }
@@ -261,12 +167,11 @@
             height: 100vh;
             background: linear-gradient(to bottom,
                 transparent 0%,
-                rgba(245, 230, 211, 0.1) 30%,
-                rgba(245, 230, 211, 0.3) 50%,
-                rgba(245, 230, 211, 0.1) 70%,
+                rgba(245, 230, 211, 0.15) 30%,
+                rgba(245, 230, 211, 0.4) 50%,
+                rgba(245, 230, 211, 0.15) 70%,
                 transparent 100%);
             z-index: 60;
-            opacity: 0.4;
         }
 
         /* 粒子装饰 */
@@ -274,10 +179,11 @@
             position: fixed;
             width: 3px;
             height: 3px;
-            background: rgba(201, 184, 150, 0.6);
+            background: rgba(201, 184, 150, 0.7);
             border-radius: 50%;
             pointer-events: none;
             animation: float-particle linear infinite;
+            box-shadow: 0 0 8px rgba(201, 184, 150, 0.5);
         }
 
         @keyframes float-particle {
@@ -291,10 +197,10 @@
             }
             90% {
                 opacity: 1;
-                transform: translateY(10vh) translateX(30px) scale(1);
+                transform: translateY(10vh) translateX(40px) scale(1);
             }
             100% {
-                transform: translateY(0) translateX(50px) scale(0);
+                transform: translateY(-10vh) translateX(60px) scale(0);
                 opacity: 0;
             }
         }
@@ -332,14 +238,15 @@
         const items = [];
         let currentIndex = 0;
         let offset = 0;
+        const itemSpacing = 550;
 
         // 创建粒子
         function createParticles() {
-            for (let i = 0; i < 25; i++) {
+            for (let i = 0; i < 30; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = (15 + Math.random() * 15) + 's';
+                particle.style.animationDuration = (12 + Math.random() * 18) + 's';
                 particle.style.animationDelay = Math.random() * 5 + 's';
                 document.body.appendChild(particle);
             }
@@ -360,73 +267,103 @@
             return item;
         }
 
-        // 初始化 - 创建 11 个项目（5层 x 2 + 中心1个）
+        // 初始化 - 创建足够多的项目
         function init() {
-            for (let i = 0; i < 11; i++) {
+            for (let i = 0; i < 15; i++) {
                 const item = createItem(poems[currentIndex % poems.length]);
                 items.push(item);
                 currentIndex++;
             }
-            updatePositions();
         }
 
-        // 更新所有项目的位置
-        function updatePositions() {
-            const centerIndex = Math.floor(items.length / 2);
+        // 基于距离的连续 3D 变换
+        function updateItem3D(item, distanceFromCenter) {
+            const absDistance = Math.abs(distanceFromCenter);
 
-            items.forEach((item, index) => {
-                const relativePos = index - centerIndex;
+            // 计算缩放 - 中心最大 (1.3)，越远越小 (0.3)
+            let scale = 1.3 - (absDistance / 1000);
+            scale = Math.max(0.3, Math.min(1.3, scale));
 
-                // 移除所有层级类
-                item.className = 'scroll-item';
+            // 计算模糊 - 中心无模糊，越远越模糊 (最大 20px)
+            let blur = (absDistance / 80);
+            blur = Math.min(20, blur);
 
-                // 根据相对位置分配层级
-                if (relativePos === 0) {
-                    item.classList.add('layer-1'); // 中心
-                } else if (Math.abs(relativePos) === 1) {
-                    item.classList.add('layer-2'); // 左右一步
-                } else if (Math.abs(relativePos) === 2) {
-                    item.classList.add('layer-3'); // 左右两步
-                } else if (Math.abs(relativePos) === 3) {
-                    item.classList.add('layer-4'); // 左右三步
-                } else {
-                    item.classList.add('layer-5'); // 更远
+            // 计算透明度 - 中心完全不透明，越远越透明
+            let opacity = 1 - (absDistance / 1200);
+            opacity = Math.max(0.1, Math.min(1, opacity));
+
+            // 计算 Z 深度 - 中心向前，两边向后
+            let translateZ = 300 - (absDistance / 2);
+            translateZ = Math.max(-500, Math.min(300, translateZ));
+
+            // 计算旋转 - 两边有轻微旋转
+            let rotateY = (distanceFromCenter / 800) * 15;
+            rotateY = Math.max(-15, Math.min(15, rotateY));
+
+            // 计算颜色 - 中心更亮
+            const centerBrightness = 1 - (absDistance / 1000);
+            let color;
+            if (centerBrightness > 0.8) {
+                color = '#f5e6d3'; // 最亮
+            } else if (centerBrightness > 0.6) {
+                color = '#d4c5a9';
+            } else if (centerBrightness > 0.4) {
+                color = '#b8a589';
+            } else {
+                color = '#8b7355';
+            }
+
+            // 应用变换
+            item.style.transform = `translateX(${distanceFromCenter}px) translate(-50%, -50%) translateZ(${translateZ}px) scale(${scale}) rotateY(${rotateY}deg)`;
+            item.style.opacity = opacity;
+            item.style.filter = `blur(${blur}px)`;
+            item.querySelector('.scroll-item-content').style.color = color;
+
+            // 文字大小也随缩放变化
+            const fontSize = 30 + (scale * 30);
+            item.querySelector('.scroll-item-content').style.fontSize = fontSize + 'px';
+
+            // 发光效果 - 只在中心
+            if (absDistance < 100) {
+                const glowIntensity = 1 - (absDistance / 100);
+                item.querySelector('.scroll-item-content').style.textShadow =
+                    `0 0 ${30 * glowIntensity}px rgba(245, 230, 211, ${glowIntensity}),
+                     0 0 ${60 * glowIntensity}px rgba(245, 230, 211, ${glowIntensity * 0.6}),
+                     0 0 ${90 * glowIntensity}px rgba(245, 230, 211, ${glowIntensity * 0.3})`;
+
+                // 显示装饰线
+                const lineWidth = 60 * glowIntensity;
+                const content = item.querySelector('.scroll-item-content');
+                content.style.setProperty('--line-width', lineWidth + 'px');
+                if (content.style.getPropertyValue('--line-width')) {
+                    content.style.setProperty('--line-width', lineWidth + 'px');
                 }
 
-                // 水平偏移
-                const spacing = 650;
-                const xOffset = relativePos * spacing;
-                const currentTransform = item.style.transform || '';
-
-                // 保持当前的 3D 变换，只更新水平位置
-                if (!currentTransform.includes('translateX')) {
-                    item.style.transform = `translateX(${xOffset}px)`;
+                // 通过伪元素宽度
+                if (glowIntensity > 0.5) {
+                    content.querySelector('::before')?.style.setProperty('width', lineWidth + 'px');
+                    content.querySelector('::after')?.style.setProperty('width', lineWidth + 'px');
                 }
-            });
+            } else {
+                item.querySelector('.scroll-item-content').style.textShadow = 'none';
+            }
         }
 
         // 平滑滚动动画
         function animate() {
-            offset += 0.8; // 滚动速度
+            offset += 1; // 滚动速度
 
-            // 应用偏移到所有项目
+            // 更新所有项目
             const centerIndex = Math.floor(items.length / 2);
             items.forEach((item, index) => {
                 const relativePos = index - centerIndex;
-                const spacing = 650;
-                const baseX = relativePos * spacing - offset;
+                const baseX = relativePos * itemSpacing - offset;
 
-                // 更新 translateX，但保持其他变换
-                const classList = Array.from(item.classList);
-                const layer = classList.find(c => c.startsWith('layer-'));
-
-                if (layer) {
-                    item.style.transform = `translateX(${baseX}px)`;
-                }
+                updateItem3D(item, baseX);
             });
 
-            // 循环逻辑 - 当偏移超过一个间距时
-            if (offset >= 650) {
+            // 循环逻辑
+            if (offset >= itemSpacing) {
                 offset = 0;
 
                 // 移除第一个项目
@@ -437,8 +374,6 @@
                 const newItem = createItem(poems[currentIndex % poems.length]);
                 items.push(newItem);
                 currentIndex++;
-
-                updatePositions();
             }
 
             requestAnimationFrame(animate);
@@ -449,7 +384,7 @@
         init();
         requestAnimationFrame(animate);
 
-        console.log('无尽卷轴 3D 已启动 - 内容流动中...');
+        console.log('✨ 无尽卷轴 3D - 平滑流动中...');
     </script>
 </body>
 </html>
