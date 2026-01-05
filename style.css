@@ -1,0 +1,173 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Serif SC', 'STSong', 'SimSun', serif;
+    background: linear-gradient(to bottom, #f5f0e8, #ebe4d8);
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+.scroll-container {
+    width: 100%;
+    height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.scroll-content {
+    display: inline-flex;
+    height: 100vh;
+    padding: 0 50vw;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    position: relative;
+}
+
+.scroll-item {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 300px;
+    height: 100vh;
+    padding: 60px 40px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.scroll-item-content {
+    font-size: 24px;
+    line-height: 2.2;
+    letter-spacing: 0.15em;
+    color: #2c2c2c;
+    text-align: center;
+    position: relative;
+    padding: 40px 20px;
+}
+
+.scroll-item-content::before,
+.scroll-item-content::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, #c9b896, transparent);
+}
+
+.scroll-item-content::before {
+    top: -40px;
+}
+
+.scroll-item-content::after {
+    bottom: -40px;
+}
+
+/* 水印 - "此刻" */
+.watermark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 120px;
+    color: rgba(201, 184, 150, 0.08);
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 0.2em;
+    pointer-events: none;
+    z-index: 1;
+    font-weight: 300;
+}
+
+/* 变体样式 - 为循环内容添加微妙变化 */
+.scroll-item.variant-1 .scroll-item-content {
+    color: #3a3a3a;
+    font-size: 23px;
+}
+
+.scroll-item.variant-2 .scroll-item-content {
+    color: #252525;
+    font-size: 25px;
+    letter-spacing: 0.18em;
+}
+
+.scroll-item.variant-3 .scroll-item-content {
+    color: #2c2c2c;
+    opacity: 0.95;
+}
+
+/* 呼吸空间 */
+.spacer {
+    min-width: 200px;
+    height: 100vh;
+    position: relative;
+}
+
+.spacer::after {
+    content: '◦';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(201, 184, 150, 0.3);
+    font-size: 16px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .scroll-item-content {
+        font-size: 20px;
+        padding: 30px 15px;
+    }
+
+    .watermark {
+        font-size: 80px;
+    }
+
+    .scroll-item {
+        min-width: 250px;
+        padding: 40px 20px;
+    }
+}
+
+/* 纹理效果 */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(201, 184, 150, 0.03) 2px,
+            rgba(201, 184, 150, 0.03) 4px
+        );
+    pointer-events: none;
+    z-index: 0;
+}
