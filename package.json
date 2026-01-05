@@ -1,0 +1,24 @@
+{
+  "name": "infinite-scroll-of-now",
+  "version": "1.0.0",
+  "description": "一个永远停留在此刻的无限滚动体验 - An infinite scroll that keeps you in the eternal now",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "preview": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "zen",
+    "infinite-scroll",
+    "meditation",
+    "chinese",
+    "philosophy",
+    "now"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/themovingdot/Infinite-Scroll-of-Now"
+  }
+}

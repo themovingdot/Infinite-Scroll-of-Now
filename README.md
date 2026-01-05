@@ -38,13 +38,35 @@
 
 ## 使用方法
 
+### 本地运行
+
 直接在浏览器中打开 `index.html`
+
+或使用本地服务器：
+```bash
+npm run dev
+```
 
 然后：
 - 滚动鼠标滚轮（或触摸滑动）
 - 观察文字的流动
 - 注意背景中的"此刻"
 - 感受这个矛盾：你在移动，又没有移动
+
+### 部署到 Vercel
+
+这个项目已配置好可以一键部署到 Vercel：
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/themovingdot/Infinite-Scroll-of-Now)
+
+或手动部署：
+
+1. Fork 这个仓库
+2. 在 [Vercel](https://vercel.com) 导入项目
+3. 点击部署 - 无需任何配置
+4. 完成！你的无尽卷轴已上线
+
+项目包含 `vercel.json` 配置文件，Vercel 会自动识别并正确部署。
 
 ## 哲学
 
